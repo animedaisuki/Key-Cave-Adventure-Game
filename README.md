@@ -25,7 +25,7 @@ Welcome to Key Cave Adventure Game! This is a dungeon crawler where you navigate
 
 1. Clone the repository
     ```
-    git clone https://github.com/your-username/key-cave-adventure-game.git
+    git clone git@github.com:animedaisuki/Key-Cave-Adventure-Game.git
     ```
 
 2. Navigate to the project directory

@@ -144,6 +144,9 @@ class GameLogic:
         self._game_information = self.init_game_information()
         self._win = False
 
+    def load_game(self, dungeon_name):
+        self._dungeon = load_game(dungeon_name)
+
     def get_positions(self, entity):
         """ """
         positions = []
@@ -245,6 +248,12 @@ class GameApp:
         self._game = GameLogic()
         self._display = None
 
+    def get_game_logic(self):
+        return self._game
+
+    def load_game(self, dungeon_name='game1.txt'):
+        self._game = GameLogic(dungeon_name)
+
     def process_action(self, action):
         player = self._game.get_player()
         message = ""
@@ -282,71 +291,71 @@ class GameApp:
 
         return message
 
-    # def play(self):
-    #     """ """
-    #     player = self._game.get_player()
-    #     while True:
-    #         self.draw()
-    #         action = input("Please input an action: ")
-    #
-    #         # Quit
-    #         if action == QUIT:
-    #             confirm = input("Are you sure you want to quit? (y/n): ")
-    #             if confirm == 'y':
-    #                 return
-    #
-    #         # Help
-    #         elif action == HELP:
-    #             print(HELP_MESSAGE)
-    #
-    #         # Investigate
-    #         elif action.startswith('I ') and len(action) == 3:
-    #             direction = action[2]
-    #             if direction not in DIRECTIONS:
-    #                 print(INVALID)
-    #                 continue
-    #
-    #             entity = self._game.get_entity_in_direction(direction)
-    #             print(f'{entity} is on the {direction} side.')
-    #             player.change_move_count(-1)
-    #
-    #         # Move Player
-    #         elif action in DIRECTIONS:
-    #             direction = action
-    #             # if player does not collide move them
-    #             if not self._game.collision_check(direction):
-    #                 self._game.move_player(direction)
-    #                 entity = self._game.get_entity(player.get_position())
-    #
-    #                 # process on_hit and check win state
-    #                 if entity is not None:
-    #                     entity.on_hit(self._game)
-    #                     if self._game.won():
-    #                         print(WIN_TEXT)
-    #                         return
-    #             else:
-    #                 print(INVALID)
-    #
-    #             player.change_move_count(-1)
-    #
-    #         else:
-    #             print(INVALID)
-    #
-    #         if self._game.check_game_over():
-    #             print(LOSE_TEST)
-    #             return
+    def play(self):
+        """ """
+        player = self._game.get_player()
+        while True:
+            self.draw()
+            action = input("Please input an action: ")
 
-    # def draw(self):
-    #     """ """
-    #     game_information = self._game.get_game_information()
-    #     dungeon_size = self._game.get_dungeon_size()
-    #     player = self._game.get_player()
-    #     player_pos = player.get_position()
-    #     moves = player.moves_remaining()
-    #
-    #     self._display = Display(game_information, dungeon_size)
-    #     self._display.display_game(player_pos)
-    #     self._display.display_moves(moves)
+            # Quit
+            if action == QUIT:
+                confirm = input("Are you sure you want to quit? (y/n): ")
+                if confirm == 'y':
+                    return
+
+            # Help
+            elif action == HELP:
+                print(HELP_MESSAGE)
+
+            # Investigate
+            elif action.startswith('I ') and len(action) == 3:
+                direction = action[2]
+                if direction not in DIRECTIONS:
+                    print(INVALID)
+                    continue
+
+                entity = self._game.get_entity_in_direction(direction)
+                print(f'{entity} is on the {direction} side.')
+                player.change_move_count(-1)
+
+            # Move Player
+            elif action in DIRECTIONS:
+                direction = action
+                # if player does not collide move them
+                if not self._game.collision_check(direction):
+                    self._game.move_player(direction)
+                    entity = self._game.get_entity(player.get_position())
+
+                    # process on_hit and check win state
+                    if entity is not None:
+                        entity.on_hit(self._game)
+                        if self._game.won():
+                            print(WIN_TEXT)
+                            return
+                else:
+                    print(INVALID)
+
+                player.change_move_count(-1)
+
+            else:
+                print(INVALID)
+
+            if self._game.check_game_over():
+                print(LOSE_TEST)
+                return
+
+    def draw(self):
+        """ """
+        game_information = self._game.get_game_information()
+        dungeon_size = self._game.get_dungeon_size()
+        player = self._game.get_player()
+        player_pos = player.get_position()
+        moves = player.moves_remaining()
+
+        self._display = Display(game_information, dungeon_size)
+        self._display.display_game(player_pos)
+        self._display.display_moves(moves)
 
     def get_game_state(self):
         game_board = [[" " for _ in range(self._game.get_dungeon_size())] for _ in range(self._game.get_dungeon_size())]
@@ -357,17 +366,25 @@ class GameApp:
         px, py = self._game.get_player().get_position()
         game_board[px][py] = PLAYER
 
+        if self._game.won():
+            status = "Win"
+        elif self._game.check_game_over():
+            status = "Game over"
+        else:
+            status = "Game in progress"
+
         return {
             "player_position": self._game.get_player().get_position(),
+            "dungeon_size":self._game.get_dungeon_size(),
             "moves_left": self._game.get_player().moves_remaining(),
             "game_board": game_board,
-            "status": "Game in progress" if not self._game.won() and not self._game.check_game_over() else "Game over"
+            "status": status
         }
 
 
 def main():
     app = GameApp()
-    # app.play()
+    app.play()
 
 
 if __name__ == "__main__":

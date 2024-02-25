@@ -24,6 +24,8 @@ class CurriculumAgent:
             mode="auto",
     ):
 
+        print('>>>>>>>>>>>>>CurriculumAgent', dungeon_map)
+
         self.llm = ChatOpenAI(
             model_name=model_name,
             temperature=temperature,
@@ -79,14 +81,18 @@ class CurriculumAgent:
         print(f"\033[35m****Curriculum Agent human message****\n{content}\033[0m")
         return HumanMessage(content=content)
 
-    def propose_solution(self, max_retries=5):
-        messages = [
-            self.render_system_message(),
-            self.render_human_message()
-        ]
-
-        if self.mode == "auto":
-            return self.propose_ai_solution(messages=messages, max_retries=max_retries)
+    def propose_solution(self, max_retries=5, game_log=None):
+        if game_log is not None:
+            messages = [self.render_system_message(), self.render_human_message(), SystemMessage(content=f'Previous tries failed:\n\n{game_log}')]
+            if self.mode == "auto":
+                return self.propose_ai_solution(messages=messages, max_retries=max_retries)
+        else:
+            messages = [
+                self.render_system_message(),
+                self.render_human_message()
+            ]
+            if self.mode == "auto":
+                return self.propose_ai_solution(messages=messages, max_retries=max_retries)
 
     def propose_ai_solution(self, *, messages, max_retries=5):
         if max_retries == 0:

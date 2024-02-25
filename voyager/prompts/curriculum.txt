@@ -64,7 +64,7 @@ Game Map:  [['#', '#', '#', '#', '#', '#', '#', '#'], ['#', 'O', ' ', ' ', '#', 
 
 RESPONSE EXAMPLE:
 Reasoning: The player should move to the door with a key. The player should move to the door with a key. To get the key, the Player should move right. However, after the Play moves right for 2 steps, if the Player continues to move right for 1 step, the Player will hit the barrier. Therefore, the player should moves down for 1 step, then move right for 2 steps, then move up for 1 step to get the key. After get the key, the Play only has 5 steps remaining, which means there is no enough steps for reaching door position. Therefore, the Player should move down for 5 steps to get the potion. After get the potion, the Player's remaining moves will increase 5. At this point, the player can move left for 3 steps to reach the door position and win the game.
-Solution: move right for 2 steps, move down for 1 step, move right for 2 steps, then move up for 1 step, move down for 5 steps, move left for 3 steps.
+Solution: move right for 2 steps, move down for 1 step, move right for 3 steps, move up for 1 step, move down for 5 steps, move left for 3 steps.
 
 
 Example 3

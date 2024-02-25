@@ -152,6 +152,16 @@ class GameLogic:
         positions = []
         for row, line in enumerate(self._dungeon):
             for col, char in enumerate(line):
+                if char == entity:
+                    positions.append((row, col))
+
+        return positions
+
+    def get_inner_wall_positions(self, entity):
+        """ """
+        positions = []
+        for row, line in enumerate(self._dungeon):
+            for col, char in enumerate(line):
                 if char == entity and (row != 0 and col != 0 and row != self._dungeon_size - 1 and col != self._dungeon_size - 1):
                     positions.append((row, col))
 
@@ -236,7 +246,7 @@ class GameLogic:
 
     def get_barrier_positions(self):
         try:
-            return self.get_positions(WALL)
+            return self.get_inner_wall_positions(WALL)
         except:
             return None
 

@@ -44,6 +44,8 @@ class Voyager:
         self.bot = bot
         self.dungeon_map = dungeon_map
 
+        print('>>>>>>>>>>>>>voyager', self.dungeon_map)
+
         # set openai api key
         os.environ["OPENAI_API_KEY"] = openai_api_key
 
@@ -61,6 +63,7 @@ class Voyager:
             ckpt_dir=ckpt_dir,
             resume=resume,
             mode=curriculum_agent_mode,
+            dungeon_map=dungeon_map,
         )
         # self.critic_agent = CriticAgent(
         #     model_name=critic_agent_model_name,
@@ -84,10 +87,7 @@ class Voyager:
     def step(self):
         if self.action_agent_rollout_num_iter < 0:
             raise ValueError("Agent must be reset before stepping")
-        print('should execute solution next')
-        print(self.solution)
         status, code = self.action_agent.execute_solution(self.solution)
-        print(status, code)
         print(f"\033[34m****Action Agent message****\n{status}\033[0m")
 
         self.action_agent_rollout_num_iter += 1
@@ -126,12 +126,16 @@ class Voyager:
 
     def learn(self, reset_env=True):
         tries = 0
+        game_log_needed = False
+
         while True:
             if tries > self.max_iterations:
                 print("Iteration limit reached")
                 break
+            game_log = U.load_text('/key_cave_adventure_game/game_log.txt') if game_log_needed else None
             solution = self.curriculum_agent.propose_solution(
                 max_retries=5,
+                game_log=game_log
             )
             print(
                 f"\033[35mStarting for at most {self.action_agent_task_max_retries} times\033[0m"
@@ -159,7 +163,10 @@ class Voyager:
                 print(
                     f"\033[35mSolution Works Successfully! \n\n{info['program_code']}\033[0m"
                 )
+                game_log_needed = False
                 break
+            else:
+                game_log_needed = True
 
             # self.curriculum_agent.update_exploration_progress(info)
             # print(

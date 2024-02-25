@@ -5,7 +5,7 @@ class ActionAgent:
     def __init__(
         self,
         bot,
-        dungeon_map="game1.txt",
+        dungeon_map,
         resume=False
     ):
         self.bot = bot

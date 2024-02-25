@@ -23,7 +23,6 @@ class CurriculumAgent:
             dungeon_map="game1.txt",
             mode="auto",
     ):
-        os.environ["OPENAI_API_KEY"] = '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'
 
         self.llm = ChatOpenAI(
             model_name=model_name,
@@ -50,10 +49,7 @@ class CurriculumAgent:
         return len(self.completed_tasks)
 
     def render_observation(self):
-        print(123)
         game_data = U.get_game_initial_data(self.dungeon_map)
-
-        print(game_data)
 
         observation = {
             "player_starting_position": f"Player Starting Position: {game_data['player_position']}\n\n",
@@ -94,12 +90,13 @@ class CurriculumAgent:
 
     def propose_ai_solution(self, *, messages, max_retries=5):
         if max_retries == 0:
-            raise RuntimeError("Max retries reached, failed to propose ai task.")
+            raise RuntimeError("Max retries reached, failed to propose ai solution.")
         curriculum = self.llm(messages).content
         print(f"\033[31m****Curriculum Agent ai message****\n{curriculum}\033[0m")
         try:
             response = self.parse_ai_solution(curriculum)
-            assert "next_task" in response
+            assert "solution" in response
+            return response['solution']
         except Exception as e:
             print(
                 f"\033[35mError parsing curriculum response: {e}. Trying again!\033[0m"

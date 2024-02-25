@@ -1,10 +1,13 @@
 import requests
-from bot_logger import logger
+from .bot_logger import logger
 
 
 class Bot:
     def __init__(self, base_url):
         self.base_url = base_url
+
+    def get_base_url(self):
+        return self.base_url
 
     def start_game(self, dungeon_name="game1.txt"):
         response = requests.post(f"{self.base_url}/game/start", json={"dungeon": dungeon_name})

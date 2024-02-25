@@ -42,7 +42,7 @@ class Display:
         """Construct a view of the dungeon.
 
         Parameters:
-            game_information (dict<tuple<int, int>: Entity): Dictionary 
+            game_information (dict<tuple<int, int>: Entity): Dictionary
                 containing the position and the corresponding Entity
             dungeon_size (int): the width of the dungeon.
         """
@@ -51,7 +51,7 @@ class Display:
 
     def display_game(self, player_pos):
         """Displays the dungeon.
-        
+
         Parameters:
             player_pos (tuple<int, int>): The position of the Player
         """
@@ -77,21 +77,21 @@ class Display:
 
     def display_moves(self, moves):
         """Displays the number of moves the Player has left.
-        
+
         Parameters:
-            moves (int): THe number of moves the Player can preform. 
+            moves (int): THe number of moves the Player can preform.
         """
         print(f"Moves left: {moves}\n")
 
 
 def load_game(filename):
     """Create a 2D array of string representing the dungeon to display.
-    
+
     Parameters:
         filename (str): A string representing the name of the level.
 
     Returns:
-        (list<list<str>>): A 2D array of strings representing the 
+        (list<list<str>>): A 2D array of strings representing the
             dungeon.
     """
     dungeon_layout = []
@@ -102,3 +102,8 @@ def load_game(filename):
             dungeon_layout.append(list(line))
 
     return dungeon_layout
+
+def log_message(message, mode='a'):
+    log_file_path = 'game_log.txt'
+    with open(log_file_path, mode) as file:
+        file.write(message + '\n')

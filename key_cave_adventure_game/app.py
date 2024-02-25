@@ -15,9 +15,16 @@ def start_game():
     global game_app
     game_app = GameApp()
     dungeon_name = request.json.get('dungeon')
-    print(dungeon_name)
     game_app.load_game(dungeon_name)
     return jsonify({'message': 'Game started'}), 200
+
+@app.route('/game/data', methods=['POST'])
+def get_game_data():
+    game_data = GameApp()
+    dungeon_name = request.json.get('dungeon')
+    game_data.load_game(dungeon_name)
+    status = game_data.get_game_state()
+    return Response(json.dumps(status, indent=None), mimetype='application/json'), 200
 
 @app.route('/game/move', methods=['POST'])
 def move_player():
@@ -34,7 +41,7 @@ def move_player():
 @app.route('/game/status', methods=['GET'])
 def get_status():
     status = game_app.get_game_state()
-    return Response(json.dumps(status, indent=None), mimetype='application/json')
+    return Response(json.dumps(status, indent=None), mimetype='application/json'), 200
 
 if __name__ == '__main__':
     app.run(port=8000, debug=True)

@@ -1,0 +1,83 @@
+There is a game called dungeon-adventure. This game is a text-based adventure and puzzle-solving game where can control a Player navigating through a maze defined in text files. The goal is to find a key, unlock a door, and win the game, all while managing a limited number of moves.
+
+The game map is represented by a Python list, with each inner list corresponding to a row in the maze. Specific symbols within this list represent different elements and obstacles you will encounter:
+The # symbols represent Walls that player cannot pass through. Walls outline the perimeter of the maze and can also appear internally as barriers blocking direct paths.
+The O symbol indicates the Player's Starting Position. This is where the player begins their journey through the maze.
+The K symbol represents a Key. The player must navigate to this location to collect the key, which is essential for unlocking the door.
+The D symbol is the Door. The player's objective is to reach this door with the key to unlock it and win the game. Remember D represents the door, not the key.
+The M symbol represents a Move Increase Potion, which can increases the player's available moves for 5. This is crucial for extending the player's ability to explore the maze, especially in larger or more complex layouts.
+The empty spaces (" ") are Pathways the player can move through. These spaces are critical for navigating the maze, allowing the player to explore, find the key, reach the door, and collect any helpful items like move increase potions.
+
+The Player can move in different directions (up, down, left, right). The challenge is to reach the door and unlock it with the key before running out of moves. Along the way, Player may encounter items that can increase his number of moves, and there is a need to strategically plan the path to avoid dead ends and unnecessary encounters with walls. To win, the Player must reach the door with the key. If the Player run out of moves before achieving this, the game is lost.
+The positions of Entities are always represented as [row, col], for example, if Player's position is [1, 9], after the player moves right for 1 step, the new position will be [1, 10], if the player continues to move down for 1 step, his new position will be [2, 10].
+
+There is an example game map: [['#', '#', '#', '#', '#'], ['#', ' ', '#', 'K', '#'], ['#', 'O', ' ', ' ', '#'], ['#', ' ', 'D', ' ', '#'], ['#', '#', '#', '#', '#']], in this map, the Player's initial position is [2,1].
+
+You are a helpful assistant that tells me the best solution about the game. My ultimate goal is to successfully reach this door with a key, and become the best player in the world.
+
+I will give you the following information:
+Player Starting Position: ...
+Key Position: ...
+Door Position: ...
+Potion Position: ...
+Barrier Positions: ...
+Moves Remaining: ...
+Game Map: ...
+
+You must follow the following criteria:
+1) You should be very careful about the 'Moves Remaining'. The total steps the player need to use must not exceed the Moves Remaining in the given information. For example, if the given moves remaining is 15 at the beginning point, but the total steps needed are 16, the task is impossible to complete.
+2) Pay attention to the barriers' coordinates compared to your current position. If the direct path to your objective is blocked by a barrier, plan to stop one step before the barrier. Then, decide move direction to circumvent the barrier.
+3) If the task can be done, the solution you give must follow a concise format, which is "move [direction] for [number] step". You can't mention anything else in solution.
+
+You should only respond in the format as described below:
+RESPONSE FORMAT:
+Reasoning: Based on the information I listed above, do reasoning about what the player should do.
+Solution: The solution based on the Reasoning.
+
+Here's some example information and response:
+
+Example 1
+
+GIVEN INFORMATION:
+Player Starting Position: [2, 1]
+Key Position: [1, 3]
+Door Position: [3, 2]
+Potion Position: None
+Barrier Positions: [[1, 2]]
+Moves Remaining: 7
+Game Map:  [['#', '#', '#', '#', '#'], ['#', ' ', '#', 'K', '#'], ['#', 'O', ' ', ' ', '#'], ['#', ' ', 'D', ' ', '#'], ['#', '#', '#', '#', '#']]
+
+RESPONSE EXAMPLE:
+Reasoning: The player should move to the door with a key. Therefore, the Play move right for 2 steps and move up for 1 step to get the key. After getting the key, the player has 4 moves remaining. The Player can move down for 2 steps then move left for 1 step to reach the door position with the key to win the game.
+Solution: move right for 2 steps, move up for 1 step, move down for 2 steps, move left for 1 step.
+
+Example 2
+
+GIVEN INFORMATION:
+Player Starting Position: [1, 1]
+Key Position: [1, 6]
+Door Position: [6, 3]
+Potion Position: [6, 6]
+Barrier Positions: [[1, 4], [4, 1], [4, 2]]
+Moves Remaining: 12
+Game Map:  [['#', '#', '#', '#', '#', '#', '#', '#'], ['#', 'O', ' ', ' ', '#', ' ', 'K', '#'], ['#', ' ', ' ', ' ', ' ', ' ', ' ', '#'], ['#', ' ', ' ', ' ', ' ', ' ', ' ', '#'], ['#', '#', '#', ' ', ' ', ' ', ' ', '#'], ['#', ' ', ' ', ' ', ' ', ' ', ' ', '#'], ['#', ' ', ' ', 'D', ' ', ' ', 'M', '#'], ['#', '#', '#', '#', '#', '#', '#', '#']]
+
+RESPONSE EXAMPLE:
+Reasoning: The player should move to the door with a key. The player should move to the door with a key. To get the key, the Player should move right. However, after the Play moves right for 2 steps, if the Player continues to move right for 1 step, the Player will hit the barrier. Therefore, the player should moves down for 1 step, then move right for 2 steps, then move up for 1 step to get the key. After get the key, the Play only has 5 steps remaining, which means there is no enough steps for reaching door position. Therefore, the Player should move down for 5 steps to get the potion. After get the potion, the Player's remaining moves will increase 5. At this point, the player can move left for 3 steps to reach the door position and win the game.
+Solution: move right for 2 steps, move down for 1 step, move right for 2 steps, then move up for 1 step, move down for 5 steps, move left for 3 steps.
+
+
+Example 3
+
+GIVEN INFORMATION:
+Player Starting Position: [1, 9]
+Key Position: [8, 3]
+Door Position: [1, 1]
+Potion Position: [9, 8]
+Barrier Positions: [[7, 1], [7, 2], [7, 3], [8, 6], [8, 7], [8, 8], [8, 9], [9, 9]]
+Moves Remaining: 29
+Game Map:  [['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'], ['#', 'D', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'O', ' ', '#'], ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'], ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'], ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'], ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'], ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'], ['#', '#', '#', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'], ['#', ' ', ' ', 'K', ' ', ' ', '#', '#', '#', '#', ' ', '#'], ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'M', '#', ' ', '#'], ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'], ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#']]
+
+RESPONSE EXAMPLE:
+Reasoning: The Player's initial position is Starting from [1, 9], the key's position is [8, 3]. The player can move left 7 steps to [1, 3], Then move down 7 steps to [8, 2]. However, there is a barrier at [7, 2]. The Player can move down for 5 step to [6,2], then move right for 1 step to [6,3]. If the Player want to move down, there is no barrier. The Player can move down for 2 steps, then move left for 1 step. After getting the key, the Player's current position is [8, 3], the Player can't move up directly as there is a barrier at [7, 3]. The Player should move right for 1 step to [8, 4], then move up to avoid the barrier.
+Solution: move right for 6 steps, move down for 5 step, move right for 1 step, move down for 2 steps, move left for 1 step, move right for 1 step, move up for 7 steps, move left for 3 steps.

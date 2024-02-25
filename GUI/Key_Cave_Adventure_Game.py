@@ -877,7 +877,7 @@ class AdvancedDungeonMap(AbstractGrid):
 class GameApp:
     """Acts as a communicator between the GameLogic and the Display."""
 
-    def __init__(self, master, task=TASK_TWO, dungeon_name="game2.txt"):
+    def __init__(self, master, task=TASK_TWO, dungeon_name="game1.txt"):
 
         """Constructor of the GameApp class."""
         self._game = GameLogic(dungeon_name)

@@ -1,14 +1,8 @@
 import requests
-import logging
+from bot_logger import logger
 
-GREEN = '\033[92m'
-RESET = '\033[0m'
 
-logging.basicConfig(level=logging.INFO,
-                    format=f'{GREEN}%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
-
-class GameBot:
+class Bot:
     def __init__(self, base_url):
         self.base_url = base_url
 
@@ -64,8 +58,9 @@ class GameBot:
                 return False
 
 if __name__ == "__main__":
-    bot = GameBot("http://localhost:8000")
-    bot.start_game()
+    bot = Bot("http://localhost:8000")
+
+    bot.start_game("game1.txt")
     bot.get_status(log=True)
 
     bot.move_right()
@@ -81,9 +76,6 @@ if __name__ == "__main__":
     bot.get_status(log=True)
 
     bot.move_down()
-    bot.get_status(log=True)
-
-    bot.move_left()
     bot.get_status(log=True)
 
     bot.move_left()

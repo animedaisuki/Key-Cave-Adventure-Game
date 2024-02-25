@@ -1,5 +1,5 @@
 from game_view import *
-
+from key_cave_adventure_game.game_log import GameLogger
 
 class Entity:
     """ """
@@ -136,7 +136,7 @@ class Player(Entity):
 
 class GameLogic:
     """ """
-    def __init__(self, dungeon_name="game1.txt"):
+    def __init__(self, dungeon_name="game2.txt"):
         """ """
         self._dungeon = load_game(dungeon_name)
         self._dungeon_size = len(self._dungeon)
@@ -152,7 +152,7 @@ class GameLogic:
         positions = []
         for row, line in enumerate(self._dungeon):
             for col, char in enumerate(line):
-                if char == entity:
+                if char == entity and (row != 0 and col != 0 and row != self._dungeon_size - 1 and col != self._dungeon_size - 1):
                     positions.append((row, col))
 
         return positions
@@ -222,6 +222,24 @@ class GameLogic:
 
         return not (0 <= new_pos[0] < self._dungeon_size and 0 <= new_pos[1] < self._dungeon_size)
 
+    def get_key_position(self):
+        return self.get_positions(KEY)[0]
+
+    def get_door_position(self):
+        return self.get_positions(DOOR)[0]
+
+    def get_potion_position(self):
+        try:
+            return self.get_positions(MOVE_INCREASE)[0]
+        except:
+            return None
+
+    def get_barrier_positions(self):
+        try:
+            return self.get_positions(WALL)
+        except:
+            return None
+
     def new_position(self, direction):
         """ """
         x, y = self.get_player().get_position()
@@ -247,6 +265,7 @@ class GameApp:
         """ """
         self._game = GameLogic()
         self._display = None
+        log_message("Collision Log", mode='w')
 
     def get_game_logic(self):
         return self._game
@@ -272,6 +291,10 @@ class GameApp:
                 player.change_move_count(-1)
         elif action in DIRECTIONS:
             direction = action
+            if self._game.collision_check(direction):
+                message = f'The Player hit the wall at {self._game.new_position(direction)}'
+                log_message(message, mode='a')
+                print(f'The Player hit the wall at {self._game.new_position(direction)}')
             if not self._game.collision_check(direction):
                 self._game.move_player(direction)
                 entity = self._game.get_entity(player.get_position())
@@ -375,7 +398,11 @@ class GameApp:
 
         return {
             "player_position": self._game.get_player().get_position(),
-            "dungeon_size":self._game.get_dungeon_size(),
+            "key_position": self._game.get_key_position(),
+            "door_position": self._game.get_door_position(),
+            "potion_position": self._game.get_potion_position(),
+            "barrier_positions":self._game.get_barrier_positions(),
+            "dungeon_size": self._game.get_dungeon_size(),
             "moves_left": self._game.get_player().moves_remaining(),
             "game_board": game_board,
             "status": status

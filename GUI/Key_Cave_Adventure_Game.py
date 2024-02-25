@@ -649,7 +649,7 @@ class StatusBar(tk.Frame):
 
         self.time_frame = tk.Frame(self._master)
         self.time_frame.pack(side=tk.LEFT)
-        self.clock_img = Image.open('images/clock.png').resize((50, 75))
+        self.clock_img = Image.open('../images/clock.png').resize((50, 75))
         self.clock_img = ImageTk.PhotoImage(self.clock_img)
         self.clock_img_label = tk.Label(self.time_frame, image=self.clock_img)
         self.clock_img_label.pack(side=tk.LEFT)
@@ -661,7 +661,7 @@ class StatusBar(tk.Frame):
 
         self.moves_frame = tk.Frame(self._master)
         self.moves_frame.pack(side=tk.LEFT, padx=100)
-        self.moves_img = Image.open('images/lightning.png').resize((50, 75))
+        self.moves_img = Image.open('../images/lightning.png').resize((50, 75))
         self.moves_img = ImageTk.PhotoImage(self.moves_img)
         self.moves_img_label = tk.Label(self.moves_frame, image=self.moves_img)
         self.moves_img_label.pack(side=tk.LEFT)
@@ -736,7 +736,7 @@ class PostStatusBar(tk.Frame):
 
         self.time_frame = tk.Frame(self._master)
         self.time_frame.pack(side=tk.LEFT)
-        self.clock_img = Image.open('images/clock.png').resize((50, 65))
+        self.clock_img = Image.open('../images/clock.png').resize((50, 65))
         self.clock_img = ImageTk.PhotoImage(self.clock_img)
         self.clock_img_label = tk.Label(self.time_frame, image=self.clock_img)
         self.clock_img_label.pack(side=tk.LEFT)
@@ -748,7 +748,7 @@ class PostStatusBar(tk.Frame):
 
         self.moves_frame = tk.Frame(self._master)
         self.moves_frame.pack(side=tk.LEFT, padx=20)
-        self.moves_img = Image.open('images/lightning.png').resize((50, 65))
+        self.moves_img = Image.open('../images/lightning.png').resize((50, 65))
         self.moves_img = ImageTk.PhotoImage(self.moves_img)
         self.moves_img_label = tk.Label(self.moves_frame, image=self.moves_img)
         self.moves_img_label.pack(side=tk.LEFT)
@@ -761,7 +761,7 @@ class PostStatusBar(tk.Frame):
 
         self.life_frame = tk.Frame(self._master)
         self.life_frame.pack(side=tk.LEFT)
-        self.life_img = Image.open('images/lives.png').resize((50, 65))
+        self.life_img = Image.open('../images/lives.png').resize((50, 65))
         self.life_img = ImageTk.PhotoImage(self.life_img)
         self.life_img_label = tk.Label(self.life_frame, image=self.life_img)
         self.life_img_label.pack(side=tk.LEFT, padx=10)
@@ -824,19 +824,19 @@ class AdvancedDungeonMap(AbstractGrid):
         self._master = master
         self._width = width / size
 
-        grass_img = Image.open('images/empty.gif').resize((int(self._width), int(self._width)))
+        grass_img = Image.open('../images/empty.gif').resize((int(self._width), int(self._width)))
         self.grass_img = ImageTk.PhotoImage(grass_img)
 
-        wall_img = Image.open('images/wall.gif').resize((int(self._width), int(self._width)))
+        wall_img = Image.open('../images/wall.gif').resize((int(self._width), int(self._width)))
         self.wall_img = ImageTk.PhotoImage(wall_img)
 
-        key_img = Image.open('images/key.gif').resize((int(self._width), int(self._width)))
+        key_img = Image.open('../images/key.gif').resize((int(self._width), int(self._width)))
         self.key_img = ImageTk.PhotoImage(key_img)
 
-        door_img = Image.open('images/door.gif').resize((int(self._width), int(self._width)))
+        door_img = Image.open('../images/door.gif').resize((int(self._width), int(self._width)))
         self.door_img = ImageTk.PhotoImage(door_img)
 
-        move_increase_img = Image.open('images/moveIncrease.gif').resize((int(self._width), int(self._width)))
+        move_increase_img = Image.open('../images/moveIncrease.gif').resize((int(self._width), int(self._width)))
         self.move_increase_img = ImageTk.PhotoImage(move_increase_img)
 
     def draw_grid(self, dungeon, player_position):
@@ -863,7 +863,7 @@ class AdvancedDungeonMap(AbstractGrid):
                         self.create_image(self.get_position_center(position), image=self.move_increase_img)
 
                 elif position == player_position:
-                    player_img = Image.open('images/player.gif').resize((int(self._width), int(self._width)))
+                    player_img = Image.open('../images/player.gif').resize((int(self._width), int(self._width)))
                     self.player_img = ImageTk.PhotoImage(player_img)
                     self.create_image(self.get_position_center(position), image=self.player_img)
                 else:
@@ -896,7 +896,7 @@ class GameApp:
         self._dungeon_name = dungeon_name
 
         self._time_stop = False
-        
+
 
         if task == TASK_ONE:
             self._dungeon_map = DungeonMap(map_pad_frame, self._game.get_dungeon_size(), bg='light grey')

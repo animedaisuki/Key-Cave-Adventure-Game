@@ -23,9 +23,6 @@ class CurriculumAgent:
             dungeon_map="game1.txt",
             mode="auto",
     ):
-
-        print('>>>>>>>>>>>>>CurriculumAgent', dungeon_map)
-
         self.llm = ChatOpenAI(
             model_name=model_name,
             temperature=temperature,

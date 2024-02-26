@@ -44,8 +44,6 @@ class Voyager:
         self.bot = bot
         self.dungeon_map = dungeon_map
 
-        print('>>>>>>>>>>>>>voyager', self.dungeon_map)
-
         # set openai api key
         os.environ["OPENAI_API_KEY"] = openai_api_key
 

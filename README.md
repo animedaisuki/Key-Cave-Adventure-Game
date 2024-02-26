@@ -38,7 +38,7 @@ cd Key-Cave-Adventure-Game
 pip install -e .
 ```
 
-# Getting Started
+## Getting Started
 Voyager uses OpenAI's GPT-4 as the language model. You need to have an OpenAI API key to use Voyager. You can get one from [here](https://platform.openai.com/account/api-keys).
 
 After the installation process, you can run Voyager by:

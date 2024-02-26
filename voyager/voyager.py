@@ -99,6 +99,7 @@ class Voyager:
             self.action_agent_rollout_num_iter >= self.action_agent_task_max_retries
             or success
         )
+
         info = {
             "solution": self.solution,
             "success": success,
@@ -110,7 +111,7 @@ class Voyager:
             info["program_code"] = code
         else:
             print(
-                f"\033[32m****Action Agent human message****\n{self.messages[-1].content}\033[0m"
+                f"\033[32m****Action Agent human message****\nGame Over\033[0m"
             )
         return self.messages, 0, done, info
 
@@ -130,10 +131,12 @@ class Voyager:
             if tries > self.max_iterations:
                 print("Iteration limit reached")
                 break
-            game_log = U.load_text('/key_cave_adventure_game/game_log.txt') if game_log_needed else None
+            game_log = U.load_text('/Users/amouyotsuha/Documents/Projects/Key-Cave-Adventure-Game/key_cave_adventure_game/game_log.txt') if game_log_needed else None
+            wrong_solution = U.load_text('/Users/amouyotsuha/Documents/Projects/Key-Cave-Adventure-Game/previous_game_solution.txt') if game_log_needed else None
             solution = self.curriculum_agent.propose_solution(
                 max_retries=5,
-                game_log=game_log
+                game_log=game_log,
+                wrong_solution=wrong_solution
             )
             print(
                 f"\033[35mStarting for at most {self.action_agent_task_max_retries} times\033[0m"

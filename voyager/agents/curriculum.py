@@ -28,7 +28,6 @@ class CurriculumAgent:
             temperature=temperature,
             request_timeout=request_timout,
         )
-
         assert mode in [
             "auto",
             "manual",
@@ -42,6 +41,7 @@ class CurriculumAgent:
         self.failed_tasks = []
         self.qa_cache = {}
         self.dungeon_map = dungeon_map
+        self.observation = None
 
     @property
     def progress(self):
@@ -68,19 +68,25 @@ class CurriculumAgent:
         assert isinstance(system_message, SystemMessage)
         return system_message
 
-    def render_human_message(self):
+    def render_human_message(self, game_log=None, wrong_solution=None):
         content = ""
         observation = self.render_observation()
+        self.observation = observation
 
-        for key in observation:
-            content += observation[key]
+        for key in self.observation:
+            content += self.observation[key]
+
+        if game_log is not None:
+            content += f"\nWrong Solution: {wrong_solution}"
 
         print(f"\033[35m****Curriculum Agent human message****\n{content}\033[0m")
         return HumanMessage(content=content)
 
-    def propose_solution(self, max_retries=5, game_log=None):
+    def propose_solution(self, max_retries=5, game_log=None, wrong_solution=None):
         if game_log is not None:
-            messages = [self.render_system_message(), self.render_human_message(), SystemMessage(content=f'Previous tries failed:\n\n{game_log}')]
+            messages = [self.render_system_message(), self.render_human_message(game_log, wrong_solution), SystemMessage(content=f'Wrong_solution is given:\n\n{wrong_solution},\n\n and here is the game log:\n\n{game_log},\n\n please give different solution based on game log')]
+            print(">>>>>>>>>>>>>>>>wrong solution: ", wrong_solution)
+            print(">>>>>>>>>>>>>>>>game log: ", game_log)
             if self.mode == "auto":
                 return self.propose_ai_solution(messages=messages, max_retries=max_retries)
         else:
